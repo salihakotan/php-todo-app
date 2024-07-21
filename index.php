@@ -1,8 +1,15 @@
 <?php
-
 session_start();
 
 require __DIR__.'/config/config.php';
+
+if(DEV_MODE){
+    error_reporting('E_ALL');
+    ini_set('error_reporting',true);
+}else{
+    error_reporting(0);
+    ini_set('error_reporting',false);
+}
 
 foreach (glob(BASEDIR.'/helpers/*.php') as $file) {
     require $file;
@@ -26,6 +33,7 @@ if (isset($result['lang'])){
 if (isset($result['route'])){
     $config['route'] = explode('/', $result['route']);
 }
+require BASEDIR.'/language/'.$config['lang'].'.php';
 
 if (file_exists(BASEDIR.'/Controller/'.$config['route'][0].'.php')) {
     require BASEDIR.'/Controller/'.$config['route'][0].'.php';
@@ -33,5 +41,5 @@ if (file_exists(BASEDIR.'/Controller/'.$config['route'][0].'.php')) {
     echo 'Sayfa bulunamadı';
 }
 
-require BASEDIR.'/language/'.$config['lang'].'.php';
+
 
