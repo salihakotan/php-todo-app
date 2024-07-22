@@ -18,6 +18,19 @@ function view($viewName, $pageData = [])
     else return false;
 }
 
+function model($modelName, $pageData = [], $data_process=null)
+{
+    global $db;
+    if ($data_process !=null) $process = $data_process;
+    $data = $pageData;
+
+    if (file_exists(BASEDIR . '/model/' . $modelName . '.php')) {
+        $return = require BASEDIR . '/model/' . $modelName . '.php';
+        return $return;
+    }
+    else return false;
+}
+
 function assets($assetName)
 {
     if (file_exists(BASEDIR . '/public/' . $assetName)) return URL . 'public/' . $assetName;
@@ -42,16 +55,22 @@ function get_session($index)
     else return false;
 }
 
+function filter($field)
+{
+    return is_array($field)
+        ? array_map('filter', $field)
+        : htmlspecialchars(trim($field));
+}
 
 function post($index)
 {
-    if(isset($_POST[$index])) return htmlspecialchars(trim($_POST[$index]));
+    if(isset($_POST[$index])) return filter($_POST[$index]);
     else return false;
 }
 
 function get($index)
 {
-    if(isset($_GET[$index])) return  htmlspecialchars(trim($_GET[$index]));
+    if(isset($_GET[$index])) return filter($_GET[$index]);
     else return false;
 }
 
@@ -59,4 +78,22 @@ function get_cookie($index)
 {
     if(isset($_COOKIE[$index])) return  trim($_COOKIE[$index]);
     else return false;
+}
+
+function redirect($link)
+{
+    header('Location: '.URL.$link);
+}
+
+function url($url)
+{
+    global $config;
+    return URL.$config['lang'].'/'.$url;
+}
+
+function _p($data)
+{
+    echo "<pre style='background: #1d1d1d;color: greenyellow; position: absolute; left: 0;top: 0;z-index: 9999;width: 100%;height: 600px'>";
+    print_r($data);
+    echo "</pre>";
 }
