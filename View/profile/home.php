@@ -42,17 +42,17 @@
 
                                     <div class="form-group">
                                         <label for="isim">İsim</label>
-                                        <input type="text" class="form-control" id="isim">
+                                        <input type="text" value="<?=get_session('name')?>" class="form-control" id="isim">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="soyisim">Soyisim</label>
-                                        <input type="text"  class="form-control" id="soyisim">
+                                        <input type="text" value="<?=get_session('surname')?>"  class="form-control" id="soyisim">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="email">Email</label>
-                                        <input type="text" class="form-control" id="email">
+                                        <input type="text" value="<?=get_session('email')?>" class="form-control" id="email">
                                     </div>
 
                                 </div>
@@ -76,12 +76,12 @@
                             <?php
                             echo get_session('error') ? '<div class="alert alert-' . $_SESSION['error']['type'] . '">' . $_SESSION['error']['message'] . '</div>' : null;
                             ?>
-                            <form id="profile" action="" method="post">
+                            <form id="password_change" action="" method="post">
                                 <div class="card-body">
 
                                     <div class="form-group">
-                                        <label for="old_pw">Eski şifreniz</label>
-                                        <input type="password" class="form-control" id="old_pw">
+                                        <label for="old_password">Eski şifreniz</label>
+                                        <input type="password" class="form-control" id="old_password">
                                     </div>
 
                                     <div class="form-group">
@@ -134,45 +134,57 @@
 
 <script>
 
-    const todo = document.getElementById("todo")
+    const profile = document.getElementById("profile")
+    const password_change = document.getElementById("password_change")
 
-    todo.addEventListener('submit', (e) => {
+    profile.addEventListener('submit', (e) => {
 
-        let title = document.getElementById('title').value;
-        let description = document.getElementById('description').value;
-        let category_id = document.getElementById('category_id').value;
-        let color = document.getElementById('color').value;
-        let start_date = document.getElementById('start_date').value;
-        let end_date = document.getElementById('end_date').value;
-        let start_date_time = document.getElementById('start_date_time').value;
-        let end_date_time = document.getElementById('end_date_time').value;
-        let status = document.getElementById('status').value;
-        let progress = document.getElementById('progress').value;
+        let isim = document.getElementById('isim').value;
+        let soyisim = document.getElementById('soyisim').value;
+        let email = document.getElementById('email').value;
 
         let formatDate = new FormData();
 
-        formatDate.append('title', title)
-        formatDate.append('description', description)
-        formatDate.append('category_id', category_id)
-        formatDate.append('color', color)
-        formatDate.append('start_date', start_date)
-        formatDate.append('end_date', end_date)
-        formatDate.append('start_date_time', start_date_time)
-        formatDate.append('end_date_time', end_date_time)
-        formatDate.append('status', status);
-        formatDate.append('progress', progress);
+        formatDate.append('isim', isim)
+        formatDate.append('soyisim', soyisim)
+        formatDate.append('email', email)
 
-        axios.post('<?=url('api/addtodo') ?>', formatDate).then(res => {
 
-            if (res.data.redirect) {
-                window.location.href = res.data.redirect;
-            } else {
-                Swal.fire({
-                    title: res.data.title,
-                    text: res.data.msg,
-                    icon: res.data.status
-                })
-            }
+        axios.post('<?=url('api/profile') ?>', formatDate).then(res => {
+
+            Swal.fire({
+                title: res.data.title,
+                text: res.data.msg,
+                icon: res.data.status
+            })
+
+
+            console.log(res)
+        }).catch(err => console.log(err))
+
+        e.preventDefault();
+    })
+
+    password_change.addEventListener('submit', (e) => {
+
+        let old_password = document.getElementById('old_password').value;
+        let password = document.getElementById('password').value;
+        let password_again = document.getElementById('password_again').value;
+
+        let formatDate = new FormData();
+
+        formatDate.append('old_password', old_password)
+        formatDate.append('password', password)
+        formatDate.append('password_again', password_again)
+
+
+        axios.post('<?=url('api/password_change') ?>', formatDate).then(res => {
+
+            Swal.fire({
+                title: res.data.title,
+                text: res.data.msg,
+                icon: res.data.status
+            })
 
 
             console.log(res)

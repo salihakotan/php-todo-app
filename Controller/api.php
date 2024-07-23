@@ -239,3 +239,125 @@ elseif(route(1)=='calendar'){
 
     echo json_encode($array);
 }
+elseif (route(1)=='profile'){
+
+    $post = filter($_POST);
+
+    if (!$post['isim']){
+        $status = 'error';
+        $title = 'Ops!';
+        $msg = 'Please enter your name';
+        echo json_encode(['status' => $status, 'title' => $title, 'msg' => $msg]);
+        exit();
+    }
+
+    if (!$post['soyisim']){
+        $status = 'error';
+        $title = 'Ops!';
+        $msg = 'Please enter your surname';
+        echo json_encode(['status' => $status, 'title' => $title, 'msg' => $msg]);
+        exit();
+    }
+
+
+    if (!$post['email']){
+        $status = 'error';
+        $title = 'Ops!';
+        $msg = 'Please enter your email';
+        echo json_encode(['status' => $status, 'title' => $title, 'msg' => $msg]);
+        exit();
+    }
+
+    $isim = $post['isim'];
+    $soyisim = $post['soyisim'];
+    $email = $post['email'];
+    $id = get_session('id');
+
+    $q = $db->query("UPDATE users SET name='$isim', email='$email',surname='$soyisim' WHERE id='$id'");
+
+    if ($q){
+
+        add_session('name',$isim);
+        add_session('email',$email);
+        add_session('surname',$soyisim);
+        add_session('fullname',$isim.' '.$soyisim);
+
+        $status = 'success';
+        $title = 'Successfull';
+        $msg = 'Profile updated successfully';
+        echo json_encode(['status' => $status, 'title' => $title, 'msg' => $msg]);
+        exit();
+    }else {
+        $status = 'error';
+        $title = 'Ops!';
+        $msg = 'Something went wrong';
+        echo json_encode(['status' => $status, 'title' => $title, 'msg' => $msg]);
+        exit();
+    }
+
+
+//    $q = $db->query('')
+
+}
+elseif (route(1)=="password_change"){
+
+    $post = filter($_POST);
+
+    if (!$post['old_password'] || (get_session('password') != md5($post['old_password']))) {
+
+            $status = 'error';
+            $title = 'Ops!';
+            $msg = 'Please enter your current password';
+            echo json_encode(['status' => $status, 'title' => $title, 'msg' => $msg]);
+            exit();
+
+    }
+
+    $kucuk = preg_match('#[a-z]#', $post['password']);
+    $buyuk = preg_match('#[A-Z]#', $post['password']);
+    $sayi = preg_match('#[0-9]#', $post['password']);
+
+    if (!$post['password'] || !$kucuk || !$sayi || !$buyuk || strlen($post['password']) < 6) {
+        $status = 'error';
+        $title = 'Ops!';
+        $msg = 'Password should be at least 6 characters and must contain at least one number, one uppercase and lowercase letter';
+        echo json_encode(['status' => $status, 'title' => $title, 'msg' => $msg]);
+        exit();
+    }
+
+
+    if (!$post['password_again']  || ($post['password'] != $post['password_again'])) {
+
+        $status = 'error';
+        $title = 'Ops!';
+        $msg = 'Passwords does not match';
+        echo json_encode(['status' => $status, 'title' => $title, 'msg' => $msg]);
+        exit();
+
+    }
+
+    $id = get_session('id');
+    $p = md5($post['password']);
+
+    $upd = $db->query("UPDATE users SET password='$p' WHERE users.id='$id'");
+
+    if ($upd){
+
+        add_session('password',$p);
+
+        $status = 'success';
+        $title = 'Successfull';
+        $msg = 'Password updated successfully';
+        echo json_encode(['status' => $status, 'title' => $title, 'msg' => $msg]);
+        exit();
+    }else {
+        $status = 'error';
+        $title = 'Ops!';
+        $msg = 'Something went wrong';
+        echo json_encode(['status' => $status, 'title' => $title, 'msg' => $msg]);
+        exit();
+    }
+
+
+
+}
