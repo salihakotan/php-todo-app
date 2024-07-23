@@ -30,92 +30,75 @@
 
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Yapılacaklar listenize ekleyin</h3>
+                                <h3 class="card-title">Profiliniz</h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
                             <?php
                             echo get_session('error') ? '<div class="alert alert-' . $_SESSION['error']['type'] . '">' . $_SESSION['error']['message'] . '</div>' : null;
                             ?>
-                            <form id="todo" action="" method="post">
-
-                                <input id="id" type="hidden" value="<?= $data['id']?>"/>
+                            <form id="profile" action="" method="post">
                                 <div class="card-body">
 
                                     <div class="form-group">
-                                        <label for="category_id">Kategori seçiniz</label>
-                                        <select id="category_id" class="form-control">
-
-                                            <option value="0">- Kategori Seçiniz -</option>
-
-
-                                            <?php foreach($data['categories'] as $category): ?>
-                                                <option <?= $data['category_id'] ==$category['id'] ? 'selected="selected"' : null ?> value="<?= $category['id'] ?>"><?= $category['title'] ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
+                                        <label for="isim">İsim</label>
+                                        <input type="text" class="form-control" id="isim">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="title">Başlık</label>
-                                        <input value="<?=$data['title']?>" type="text" name="title" class="form-control" id="title"
-                                               placeholder="Başlık girin">
+                                        <label for="soyisim">Soyisim</label>
+                                        <input type="text"  class="form-control" id="soyisim">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="description">Açıklama</label>
-                                        <input value="<?=$data['description']?>" type="text" name="description" class="form-control" id="description"
-                                               placeholder="Açıklama girin">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="status">Durum</label>
-                                        <select id="status" class="form-control">
-                                            <option <?=$data['status'] == 'a' ? 'selected="selected"' : null ?> value="a">Aktif</option>
-                                            <option <?=$data['status'] == 'p' ? 'selected="selected"' : null ?> value="p">Pasif</option>
-                                            <option <?=$data['status'] == 's' ? 'selected="selected"' : null ?> value="s">Süreçte</option>
-                                        </select>
+                                        <label for="email">Email</label>
+                                        <input type="text" class="form-control" id="email">
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="progress">İlerleme</label>
-                                        <input value="<?=$data['progress']?>" type="range" class="form-control" id="progress" min="0" max="100">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="color">Renk</label>
-                                        <input value="<?=$data['color']?>" type="color" class="form-control" id="color" value="#007bff">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="start_date">Başlangıç tarihi</label>
-                                        <div class="row">
-
-                                            <?php
-
-                                            $start_date = date('Y-m-d', strtotime($data['start_date']));
-                                            $start_date_time = date('H:i', strtotime($data['start_date']));
-                                            $end_date = date('Y-m-d', strtotime($data['end_date']));
-                                            $end_date_time = date('H:i', strtotime($data['end_date']));
-
-                                            ?>
-
-                                            <input value="<?= $start_date ?>" type="date" class="form-control col-8" id="start_date"/>
-                                            <input value="<?= $start_date_time ?>" type="time" class="form-control col-4" id="start_date_time"/>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="end_date">Bitiş tarihi</label>
-                                        <div class="row">
-                                            <input value="<?= $end_date ?>" type="date" class="form-control col-8" id="end_date"/>
-                                            <input value="<?= $end_date_time ?>" type="time" class="form-control col-4" id="end_date_time"/>
-
-                                        </div>
-                                    </div>
                                 </div>
                                 <!-- /.card-body -->
 
                                 <div class="card-footer">
-                                    <button type="submit" name="submit" value="1" class="btn btn-primary">Update</button>
+                                    <button type="submit" class="btn btn-primary">Güncelle</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Şifrenizi değiştirin</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <?php
+                            echo get_session('error') ? '<div class="alert alert-' . $_SESSION['error']['type'] . '">' . $_SESSION['error']['message'] . '</div>' : null;
+                            ?>
+                            <form id="profile" action="" method="post">
+                                <div class="card-body">
+
+                                    <div class="form-group">
+                                        <label for="old_pw">Eski şifreniz</label>
+                                        <input type="password" class="form-control" id="old_pw">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="password">Yeni şifre</label>
+                                        <input type="password" class="form-control" id="password">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="password_again">Yeni şifre tekrar</label>
+                                        <input type="password" class="form-control" id="password_again">
+                                    </div>
+
+                                </div>
+                                <!-- /.card-body -->
+
+                                <div class="card-footer">
+                                    <button type="submit" name="submit" value="1" class="btn btn-primary">Güncelle</button>
                                 </div>
                             </form>
                         </div>
@@ -155,7 +138,6 @@
 
     todo.addEventListener('submit', (e) => {
 
-        let id = document.getElementById('id').value;
         let title = document.getElementById('title').value;
         let description = document.getElementById('description').value;
         let category_id = document.getElementById('category_id').value;
@@ -169,7 +151,6 @@
 
         let formatDate = new FormData();
 
-        formatDate.append('id', id)
         formatDate.append('title', title)
         formatDate.append('description', description)
         formatDate.append('category_id', category_id)
@@ -181,8 +162,7 @@
         formatDate.append('status', status);
         formatDate.append('progress', progress);
 
-        axios.post('<?=url('api/edittodo') ?>', formatDate).then(res => {
-            console.log("res" + res.data);
+        axios.post('<?=url('api/addtodo') ?>', formatDate).then(res => {
 
             if (res.data.redirect) {
                 window.location.href = res.data.redirect;

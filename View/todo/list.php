@@ -74,7 +74,7 @@
                                                     <div class="progress-bar progress-bar-danger" style="width:  <?= $value['progress'] ?>%"></div>
                                                 </div>
                                             </td>
-                                            <td><span class="badge badge-<?= $value['status'] =='a' ? 'success' : 'danger'?>"><?= $value['status'] =='a' ? 'Devam eden' : 'Biten'?></span></td>
+                                            <td><span class="badge bg-<?= status($value['status'])['color']?>"><?= status($value['status'])['title']?></span></td>
                                             <td>
                                                 <div class="btn-group btn-group-sm">
                                                     <a class="btn btn-sm btn-warning"

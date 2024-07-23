@@ -219,3 +219,23 @@ elseif (route(1) == 'removetodo') {
     }
 
 }
+elseif(route(1)=='calendar'){
+
+    $end = get('end');
+    $start = get('start');
+
+
+    $sql = "SELECT id,title,color, start_date as start, end_date as end, CONCAT('/todoapp/todo/edit/',todos.id) as url FROM todos
+         WHERE todos.user_id=?";
+
+    if ($start && $end){
+        $sql.= " && (end_date BETWEEN '$end' AND '$start' OR start_date BETWEEN '$start' AND '$end')";
+    }
+
+    $q = $db->prepare($sql);
+    $q->execute([get_session('id')]);
+    $array = $q->fetchAll(PDO::FETCH_ASSOC);
+
+
+    echo json_encode($array);
+}

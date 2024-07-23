@@ -63,9 +63,10 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="status">Durum</label>
-                                        <select id="status">
+                                        <select class="form-control" id="status">
                                             <option value="a">Aktif</option>
                                             <option value="p">Pasif</option>
+                                            <option value="s">Süreçte</option>
                                         </select>
                                     </div>
 
